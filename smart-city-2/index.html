@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Smart City Words · Level 2</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#eef7ff;--card:#fff;--ink:#22304a;--muted:#66728a;--line:#d6e4f2;--accent:#1d7fd6;--ok:#1b9e5a;--bad:#d64545}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:'Nunito',system-ui,sans-serif;background:var(--bg);color:var(--ink);font-size:18px}
+  header{padding:22px 16px 8px;text-align:center}
+  h1{margin:0;font-size:28px;font-weight:800}
+  .sub{color:var(--muted);margin-top:4px;font-size:16px}
+  .score{display:inline-block;margin-top:10px;background:#fff;border:2px solid var(--line);border-radius:999px;padding:6px 16px;font-weight:800}
+  nav{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;padding:12px}
+  nav button{font:inherit;font-size:15px;font-weight:700;border:2px solid var(--line);background:#fff;border-radius:12px;padding:8px 12px;cursor:pointer;color:var(--ink)}
+  nav button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+  .tick{color:var(--ok)} nav button.on .tick{color:#9ff0c4}
+  main{max-width:760px;margin:0 auto;padding:0 14px 60px}
+  .card{background:var(--card);border:2px solid var(--line);border-radius:18px;padding:20px;margin-bottom:16px}
+  h2{margin:0 0 6px;font-size:22px}
+  .instr{color:var(--muted);margin:0 0 14px;font-size:16px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+  .fc{background:#fff;border:3px solid var(--line);border-radius:16px;min-height:120px;padding:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;cursor:pointer;user-select:none}
+  .fc.open{border-color:var(--accent);background:#f3f9ff}
+  .fc .word{font-weight:800;font-size:20px}
+  .fc .he{font-weight:800;font-size:18px;direction:rtl;color:var(--accent);display:none;margin-top:4px}
+  .fc .pic{font-size:34px;display:none}
+  .fc .pic svg{width:40px;height:40px}
+  .fc.open .he,.fc.open .pic{display:block}
+  .fc .hint{font-size:13px;color:var(--muted);margin-top:6px}
+  .fc.open .hint{display:none}
+  .bigpic{font-size:90px;text-align:center;line-height:1.1;margin:6px 0 4px}
+  .bigpic svg{width:100px;height:100px}
+  .hebig{font-size:24px;font-weight:800;color:var(--accent);direction:rtl;text-align:center;margin-bottom:12px}
+  .slots{display:flex;justify-content:center;flex-wrap:wrap;gap:6px;margin:10px 0 16px}
+  .slot{width:38px;height:46px;border-bottom:4px solid var(--ink);font-size:28px;font-weight:800;text-align:center;line-height:46px;color:var(--accent)}
+  .letters{display:flex;justify-content:center;flex-wrap:wrap;gap:8px}
+  .let{font:inherit;font-size:24px;font-weight:800;width:50px;height:54px;border:3px solid var(--line);border-radius:12px;background:#fff;color:var(--ink);cursor:pointer}
+  .let.used{visibility:hidden}
+  .let.wrong{border-color:var(--bad);background:#fdeeee;animation:sh .3s}
+  @keyframes sh{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+  .opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .opts.one{grid-template-columns:1fr}
+  .opt{font:inherit;font-weight:800;font-size:18px;background:#fff;color:var(--ink);border:3px solid var(--line);border-radius:14px;padding:14px 10px;cursor:pointer}
+  .opt:disabled{opacity:.35;cursor:default}
+  .opt.right{border-color:var(--ok);background:#eafaf1;opacity:1}
+  .opt.wrong{border-color:var(--bad);background:#fdeeee}
+  .sent{font-size:21px;font-weight:700;margin:8px 0 16px;line-height:1.55}
+  .blank{display:inline-block;min-width:90px;border-bottom:3px solid var(--ink);text-align:center;padding:0 6px;color:var(--accent)}
+  .fb{min-height:28px;margin-top:12px;font-weight:800}
+  .fb.good{color:var(--ok)} .fb.no{color:var(--bad)}
+  .row{display:flex;justify-content:space-between;align-items:center;margin-top:12px;gap:10px;flex-wrap:wrap}
+  .next{font:inherit;font-weight:800;background:var(--ink);color:#fff;border:none;border-radius:12px;padding:12px 20px;cursor:pointer}
+  .next.ghost{background:#fff;color:var(--ink);border:2px solid var(--line)}
+  .small{font:inherit;font-size:15px;font-weight:700;border:2px solid var(--line);background:#fff;border-radius:10px;padding:5px 12px;cursor:pointer;color:var(--ink)}
+  .progress{color:var(--muted);font-weight:700;font-size:15px}
+  .bar{height:10px;background:var(--line);border-radius:99px;overflow:hidden;margin-bottom:14px}
+  .bar i{display:block;height:100%;background:var(--accent);transition:width .3s}
+  .text{background:#f7fbff;border:2px solid var(--line);border-radius:14px;padding:14px 16px;line-height:1.65;font-size:18px}
+  .text p{margin:0 0 10px}
+  .text p:last-child{margin:0}
+  details.text{margin-bottom:14px}
+  details.text summary{cursor:pointer;font-weight:800;color:var(--accent)}
+  .tag{display:inline-block;font-size:13px;font-weight:800;background:var(--ink);color:#fff;border-radius:8px;padding:2px 8px;margin-bottom:8px}
+  .done{text-align:center}
+  .stars{font-size:44px;letter-spacing:4px}
+  .big{font-size:40px;font-weight:800;margin:6px 0}
+  table.sum{margin:10px auto;border-collapse:collapse;font-size:17px}
+  table.sum td{padding:6px 12px;border-bottom:1px solid var(--line)}
+  table.sum td:last-child{font-weight:800;text-align:right}
+  @media (max-width:480px){.grid{grid-template-columns:1fr 1fr}.let{width:44px;height:50px;font-size:22px}.slot{width:30px;font-size:24px}.opts{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header>
+  <h1>🏙️ Smart City Words</h1>
+  <div class="sub">Level 2 · Spell, use and read</div>
+  <div class="score">⭐ <span id="total">0</span> / <span id="max">0</span></div>
+</header>
+<nav id="nav"></nav>
+<main id="main"></main>
+
+<script>
+const HALF = '<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="46" fill="#d6e4f2" stroke="#22304a" stroke-width="4"/><path d="M50 50 L50 4 A46 46 0 1 1 7.6 67.9 Z" fill="#1d7fd6" stroke="#22304a" stroke-width="4"/></svg>';
+
+const W = [
+  {w:'smart',p:'🧠💡',he:'חכם / חכמה'},{w:'collect',p:'🧺🍎',he:'לאסוף'},
+  {w:'rubbish',p:'🗑️',he:'זבל'},{w:'more than half',p:HALF,he:'יותר מחצי'},
+  {w:'noise',p:'🔊',he:'רעש'},{w:'preparing',p:'🧑‍🍳',he:'מכין / מכינה'},
+  {w:'traffic',p:'🚗🚙',he:'תנועה / פקקים'},{w:'houses',p:'🏘️',he:'בתים'},
+  {w:'schools',p:'🏫',he:'בתי ספר'},{w:'hospitals',p:'🏥',he:'בתי חולים'},
+  {w:'jobs',p:'💼',he:'עבודות / משרות'},{w:'transport',p:'🚌🚆',he:'תחבורה'},
+  {w:'energy',p:'⚡',he:'אנרגיה'},{w:'food',p:'🥗',he:'אוכל'},
+  {w:'float',p:'🛟',he:'לצוף'},{w:'bike lanes',p:'🚲🛣️',he:'שבילי אופניים'}
+];
+const byW = Object.fromEntries(W.map(x=>[x.w,x]));
+
+const SPELL = ['smart','collect','rubbish','noise','traffic','hospitals','transport','energy','float','preparing'];
+
+const SENT = [
+  ['In a smart city, the bins tell the trucks when they are full, so the trucks ___ the rubbish only when it is needed.','collect'],
+  ['My grandmother lives near the airport. The ___ from the planes wakes her up at night.','noise'],
+  ['If more people take the train instead of the car, there will be less ___ on the roads.','traffic'],
+  ['The city is building new ___ so people can ride to work safely without a car.','bike lanes'],
+  ['Solar panels on the roofs give the city clean ___.','energy'],
+  ['In the city of the future, some houses will ___ on the sea, just like boats.','float'],
+  ['56 out of 100 people want more parks. That is ___ of the people!','more than half'],
+  ['The new factory will give 500 people ___, so they can earn money.','jobs'],
+  ['When it rains, many people stop riding their bikes and use public ___.','transport'],
+  ['The city is ___ for the future: it is planning new roads, parks and playgrounds.','preparing'],
+  ['Please don\'t throw ___ on the street. It makes the city dirty.','rubbish'],
+  ['Farms on the roofs of buildings can grow fresh ___ for people in the city.','food'],
+  ['In a ___ city, the traffic lights, buses and phones all "talk" to each other.','smart'],
+  ['The city is growing fast. It needs more ___ for sick people and more ___ for children.','hospitals|schools']
+];
+
+const TEXT = [
+  'It is the year 2050. Noa lives in a smart city by the sea. Her house does not stand on the ground. It floats on the water!',
+  'Solar panels on the roof make all the energy for the house. In the morning, Noa rides her bike to school in a bike lane. There is almost no traffic, because more than half of the people use public transport. The buses are electric, so there is very little noise.',
+  'At night, small robot trucks collect the rubbish. They are very quiet, so nobody wakes up.',
+  'On the roof of Noa\'s school there is a farm. The students grow food for the school kitchen. Today the cooks are preparing lunch with fresh tomatoes from the roof.',
+  'Noa\'s mother is a doctor. She works at the new hospital. "The city is growing," she says. "There are a lot of new jobs here."'
+];
+const QS = [
+  {q:'Where is Noa\'s house?',o:['On the water','On a hill','Near the airport','Under the ground'],a:'On the water'},
+  {q:'True or false? Noa goes to school by car.',o:['True','False'],a:'False'},
+  {q:'Why is there almost no traffic?',o:['Most people use public transport','The roads are closed','Nobody works','Cars are not allowed'],a:'Most people use public transport'},
+  {q:'Why is there very little noise?',o:['The buses are electric','People stay at home','There are no buses','The city is very small'],a:'The buses are electric'},
+  {q:'When do the robot trucks collect the rubbish?',o:['At night','In the morning','At lunchtime','Once a week'],a:'At night'},
+  {q:'Where do the tomatoes for lunch come from?',o:['A farm on the school roof','A shop in the city','A farm far away','Noa\'s house'],a:'A farm on the school roof'},
+  {q:'True or false? Noa\'s mother works at a school.',o:['True','False'],a:'False'},
+  {q:'Find the word in the text that means "לצוף".',o:['floats','stands','grows','rides'],a:'floats'}
+];
+
+const PARTS = [
+  {id:'rev',name:'1. Quick review'},
+  {id:'spell',name:'2. Spell it',n:SPELL.length},
+  {id:'sent',name:'3. Use the word',n:SENT.length},
+  {id:'read',name:'4. Read: City 2050',n:QS.length},
+  {id:'end',name:'⭐ Results'}
+];
+const S = {part:'rev', idx:{spell:0,sent:0,read:0}, score:{spell:0,sent:0,read:0}, done:{}, order:{}};
+const MAX = SPELL.length + SENT.length + QS.length;
+document.getElementById('max').textContent = MAX;
+const $m = document.getElementById('main');
+
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function total(){return S.score.spell+S.score.sent+S.score.read;}
+function upd(){document.getElementById('total').textContent=total();}
+function cap(s){return s[0].toUpperCase()+s.slice(1);}
+function say(t){try{const u=new SpeechSynthesisUtterance(t);u.lang='en-US';u.rate=.85;speechSynthesis.cancel();speechSynthesis.speak(u);}catch(e){}}
+function getOrder(id,len){if(!S.order[id])S.order[id]=shuffle([...Array(len).keys()]);return S.order[id];}
+function bar(i,n){return `<div class="bar"><i style="width:${i/n*100}%"></i></div>`;}
+
+function nav(){
+  const n=document.getElementById('nav'); n.innerHTML='';
+  PARTS.forEach(p=>{const b=document.createElement('button');b.className=S.part===p.id?'on':'';
+    b.innerHTML=p.name+(S.done[p.id]?' <span class="tick">✔</span>':'');b.onclick=()=>go(p.id);n.appendChild(b);});
+}
+function go(id){S.part=id;render();window.scrollTo({top:0,behavior:'smooth'});}
+function render(){nav();upd();({rev,spell,sent,read,end})[S.part]();}
+
+function partDone(id,n){
+  S.done[id]=true;
+  const next={spell:'sent',sent:'read',read:'end'}[id];
+  $m.innerHTML=`<div class="card done"><h2>Part complete! 🎉</h2><div class="big">${S.score[id]} / ${n}</div>
+  <div class="row" style="justify-content:center"><button class="next ghost" onclick="resetPart('${id}')">Try again</button>
+  <button class="next" onclick="go('${next}')">Next →</button></div></div>`;
+  nav();upd();
+}
+function resetPart(id){S.idx[id]=0;S.score[id]=0;S.done[id]=false;S.order[id]=null;render();}
+
+/* 1. Review: word first, meaning hidden */
+function rev(){
+  $m.innerHTML=`<div class="card"><h2>Do you remember?</h2>
+  <p class="instr">This time you see only the word. Say the meaning in Hebrew, then tap to check.</p>
+  <div class="grid">${W.map((x,i)=>`<div class="fc" data-i="${i}">
+    <div class="word">${x.w}</div><div class="hint">tap to check</div>
+    <div class="pic">${x.p}</div><div class="he">${x.he}</div></div>`).join('')}</div>
+  <div class="row"><span></span><button class="next" onclick="S.done.rev=true;go('spell')">Start →</button></div></div>`;
+  $m.querySelectorAll('.fc').forEach(c=>c.onclick=()=>{c.classList.toggle('open');if(c.classList.contains('open'))say(W[+c.dataset.i].w);});
+}
+
+/* 2. Spell it */
+function spell(){
+  const ord=getOrder('spell',SPELL.length), i=S.idx.spell;
+  if(i>=ord.length)return partDone('spell',SPELL.length);
+  const word=SPELL[ord[i]], x=byW[word];
+  let pos=0, first=true;
+  $m.innerHTML=`<div class="card">${bar(i,ord.length)}<h2>Spell the word</h2>
+  <p class="instr">Tap the letters in the right order.</p>
+  <div class="bigpic">${x.p}</div><div class="hebig">${x.he}</div>
+  <div class="slots">${[...word].map((_,k)=>`<div class="slot" id="s${k}"></div>`).join('')}</div>
+  <div class="letters">${shuffle([...word]).map(l=>`<button class="let" data-l="${l}">${l}</button>`).join('')}</div>
+  <div class="fb" id="fb"></div>
+  <div class="row"><span class="progress">${i+1} of ${ord.length}</span>
+  <span><button class="small" id="hint">💡 Hint: listen</button> <button class="next" id="nx" style="display:none">Next →</button></span></div></div>`;
+  const fb=document.getElementById('fb');
+  document.getElementById('hint').onclick=()=>{first=false;say(word);};
+  $m.querySelectorAll('.let').forEach(b=>b.onclick=()=>{
+    if(pos>=word.length)return;
+    if(b.dataset.l===word[pos]){
+      document.getElementById('s'+pos).textContent=word[pos]; b.classList.add('used'); pos++; fb.textContent='';
+      if(pos===word.length){
+        if(first){S.score.spell++;upd();}
+        fb.className='fb good'; fb.textContent=first?'✅ Perfect spelling!':'✅ Well done!';
+        say(word); document.getElementById('nx').style.display='inline-block';
+        document.getElementById('hint').style.display='none';
+      }
+    } else {
+      first=false; b.classList.remove('wrong'); void b.offsetWidth; b.classList.add('wrong');
+      fb.className='fb no'; fb.textContent='❌ Not this letter.';
+    }
+  });
+  document.getElementById('nx').onclick=()=>{S.idx.spell++;render();};
+}
+
+/* generic multiple-choice */
+function mc(id,{title,instr,prompt,options,correct,show,onRight,ord,cls}){
+  const i=S.idx[id], n=ord.length; let first=true;
+  $m.innerHTML=`<div class="card">${bar(i,n)}<h2>${title}</h2><p class="instr">${instr}</p>${prompt}
+  <div class="opts ${cls||''}">${options.map(o=>`<button class="opt" data-o="${o}">${show(o)}</button>`).join('')}</div>
+  <div class="fb" id="fb"></div>
+  <div class="row"><span class="progress">${i+1} of ${n}</span><button class="next" id="nx" style="display:none">Next →</button></div></div>`;
+  const fb=document.getElementById('fb');
+  $m.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
+    if(b.dataset.o===correct){
+      if(first){S.score[id]++;upd();}
+      b.classList.add('right'); $m.querySelectorAll('.opt').forEach(x=>{if(x!==b)x.disabled=true;});
+      fb.className='fb good'; fb.textContent=first?'✅ Excellent!':'✅ Yes, that\'s it!';
+      onRight&&onRight(); document.getElementById('nx').style.display='inline-block';
+    } else {first=false;b.classList.add('wrong');b.disabled=true;fb.className='fb no';fb.textContent='❌ Not this one. Try again!';}
+  });
+  document.getElementById('nx').onclick=()=>{S.idx[id]++;render();};
+}
+
+/* 3. Use the word: longer sentences, no picture */
+function sent(){
+  const ord=getOrder('sent',SENT.length), i=S.idx.sent;
+  if(i>=ord.length)return partDone('sent',SENT.length);
+  const [s,a]=SENT[ord[i]];
+  const parts=a.split('|'), start=s.startsWith('___');
+  let options;
+  if(parts.length>1){
+    options=shuffle([a,parts[1]+'|'+parts[0],'houses|jobs','schools|food']);
+  } else {
+    options=shuffle([a,...shuffle(W.map(x=>x.w).filter(w=>w!==a)).slice(0,3)]);
+  }
+  const show=o=>o.split('|').map(x=>start?cap(x):x).join(' … ');
+  let k=0; const html=s.replace(/___/g,()=>`<span class="blank" id="bl${k++}">?</span>`);
+  mc('sent',{title:'Use the word',instr:parts.length>1?'This one has two gaps! Choose the right pair.':'Read the sentence. Which word goes in the gap?',ord,
+    prompt:`<div class="sent">${html}</div>`,options,correct:a,show,
+    onRight:()=>{parts.forEach((p,j)=>document.getElementById('bl'+j).textContent=(j===0&&start)?cap(p):p);say(s.replace(/___/g,()=>parts.shift()||''));}});
+}
+
+/* 4. Reading */
+function read(){
+  const i=S.idx.read;
+  if(i>=QS.length)return partDone('read',QS.length);
+  const q=QS[i];
+  const passage=TEXT.map(p=>`<p>${p}</p>`).join('');
+  const box= i===0
+    ? `<div class="text"><span class="tag">📖 City 2050</span>${passage}<div style="margin-top:10px"><button class="small" onclick="say(TEXT.join(' '))">🔈 Listen to the text</button></div></div><br>`
+    : `<details class="text"><summary>📖 Show the text again</summary><br>${passage}</details>`;
+  mc('read',{title:'Read and answer',instr:'Read about Noa\'s city. Then answer the questions.',ord:QS,
+    prompt:box+`<div class="sent">${q.q}</div>`,options:q.o.length>2?shuffle(q.o):q.o,correct:q.a,show:o=>o,cls:q.o.length>2?'one':''});
+}
+
+/* Results */
+function end(){
+  const t=total(), p=t/MAX;
+  const stars=p>=.9?'⭐⭐⭐':p>=.6?'⭐⭐☆':p>0?'⭐☆☆':'☆☆☆';
+  const msg=p>=.9?'Excellent! You are a smart city expert!':p>=.6?'Very good! Practice a little more.':'Good start! Go back to the review and try again.';
+  $m.innerHTML=`<div class="card done"><h2>Your results</h2><div class="stars">${stars}</div>
+  <div class="big">${t} / ${MAX}</div><p>${msg}</p>
+  <table class="sum"><tr><td>Spell it</td><td>${S.score.spell} / ${SPELL.length}</td></tr>
+  <tr><td>Use the word</td><td>${S.score.sent} / ${SENT.length}</td></tr>
+  <tr><td>Read: City 2050</td><td>${S.score.read} / ${QS.length}</td></tr></table>
+  <p class="instr">Points count only for right answers on the first try (a spelling hint costs the point).</p>
+  <button class="next" onclick="['spell','sent','read'].forEach(p=>{S.idx[p]=0;S.score[p]=0;S.done[p]=false;S.order[p]=null});go('spell')">Play again 🔄</button></div>`;
+}
+
+render();
+</script>
+</body>
+</html>
