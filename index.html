@@ -1,8 +1,61 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>English exercises</title>
-<style>body{margin:0;font:18px/1.5 system-ui,sans-serif;background:#f3f7ef;color:#16231b}main{max-width:640px;margin:0 auto;padding:32px 18px}h1{font-size:34px;margin:0 0 18px}a{display:block;padding:16px 18px;margin:0 0 12px;background:#fff;border:2px solid #2d6a4f;border-radius:14px;color:#16231b;text-decoration:none;font-weight:700}</style></head>
-<body><main><h1>English exercises</h1>
-<a href="earth-song/">Earth Song – reading and comprehension</a>
-<a href="goose/">The Goose That Laid the Golden Eggs – vocabulary comic</a>
-<a href="smart-city-2/">Smart City Words – Level 2</a>
-</main></body></html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>English exercises</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{--ink:#4a2511;--muted:#8a5a3c}
+  *{box-sizing:border-box}
+  body{margin:0;min-height:100vh;font-family:'Nunito',system-ui,sans-serif;color:var(--ink);
+    background:linear-gradient(160deg,#fff4d6 0%,#ffe2c2 45%,#ffd0c4 100%)}
+  main{max-width:640px;margin:0 auto;padding:36px 18px 50px}
+  header{text-align:center;margin-bottom:26px}
+  .sun{font-size:64px;line-height:1;display:inline-block;animation:spin 18s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  h1{font-size:38px;font-weight:900;margin:10px 0 4px;color:#c2410c}
+  .sub{font-size:18px;color:var(--muted);font-weight:700;margin:0}
+  a.card{display:flex;align-items:center;gap:16px;padding:18px 20px;margin:0 0 14px;border-radius:20px;
+    text-decoration:none;color:var(--ink);background:#fff;box-shadow:0 6px 0 var(--edge),0 10px 24px rgba(194,65,12,.12);
+    border:3px solid var(--edge);transition:transform .12s,box-shadow .12s}
+  a.card:hover{transform:translateY(-3px)}
+  a.card:active{transform:translateY(4px);box-shadow:0 2px 0 var(--edge)}
+  .icon{flex:none;width:62px;height:62px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:34px;background:var(--soft)}
+  .t{font-size:20px;font-weight:900;line-height:1.25}
+  .d{font-size:15px;font-weight:700;color:var(--muted);margin-top:2px}
+  .go{margin-left:auto;font-size:26px;font-weight:900;color:var(--edge)}
+  .c1{--edge:#f59e0b;--soft:#fef3c7}
+  .c2{--edge:#f97316;--soft:#ffedd5}
+  .c3{--edge:#e11d48;--soft:#ffe4e6}
+  footer{text-align:center;margin-top:28px;font-size:15px;font-weight:700;color:var(--muted)}
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <div class="sun">☀️</div>
+    <h1>English exercises</h1>
+    <p class="sub">Choose an activity and have fun! 🎉</p>
+  </header>
+
+  <a class="card c1" href="earth-song/">
+    <div class="icon">🌍</div>
+    <div><div class="t">Earth Song</div><div class="d">Reading and comprehension</div></div>
+    <div class="go">›</div>
+  </a>
+  <a class="card c2" href="goose/">
+    <div class="icon">🪿</div>
+    <div><div class="t">The Goose That Laid the Golden Eggs</div><div class="d">Vocabulary comic</div></div>
+    <div class="go">›</div>
+  </a>
+  <a class="card c3" href="smart-city-2/">
+    <div class="icon">🏙️</div>
+    <div><div class="t">Smart City Words · Level 2</div><div class="d">Spell, use and read</div></div>
+    <div class="go">›</div>
+  </a>
+
+  <footer>Good luck! 🍀</footer>
+</main>
+</body>
+</html>
