@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Noa Sings for the Pope</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* VOICE: warm reading page for a young learner; calm, clear, story-first
+   IDEA: a story card from a reader book, with the new words glowing like stage lights
+   PICTURE: an evening stage in a great square — dome, columns, crowd, a singer in a spotlight
+   COLOUR and TYPE: night blue, golden light, warm stone; Baloo 2 titles + Nunito body
+   LAYOUT: picture band on top, story column under 680px, word chips that show Hebrew on tap, timeline, glossary */
+:root{color-scheme:light dark;--bg:light-dark(#fbf7ef,#121a2b);--card:light-dark(#ffffff,#1a2540);--ink:light-dark(#1d2433,#eef1f7);--soft:light-dark(#5e6577,#aab3c7);--line:light-dark(#e8dfcc,#2b3858);--gold:#f2b632;--hi:light-dark(#fff1c9,#3a3420)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.7 Nunito,system-ui,sans-serif;overflow-x:clip}
+.hero{background:#14203d;padding:0}
+.hero svg{display:block;width:100%;max-width:1100px;margin:0 auto;height:auto}
+main{max-width:680px;margin:0 auto;padding:24px max(5vw,16px) 48px}
+h1{font:800 clamp(32px,7vw,46px)/1.05 "Baloo 2",system-ui,sans-serif;margin:6px 0 4px;text-wrap:balance}
+.by{color:var(--soft);margin:0 0 18px;font-size:15px}
+.tip{background:var(--card);border:1px dashed var(--line);border-radius:12px;padding:8px 14px;font-size:15px;color:var(--soft);margin-bottom:20px}
+p{margin:0 0 16px}
+.w{background:var(--hi);border:0;border-bottom:2px solid var(--gold);border-radius:4px;padding:0 4px;font:inherit;font-weight:700;color:inherit;cursor:pointer;position:relative}
+.w:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.w.open::after{content:attr(data-he);position:absolute;left:50%;bottom:calc(100% + 6px);transform:translateX(-50%);background:#1d2433;color:#fff;font-weight:700;padding:3px 10px;border-radius:8px;white-space:nowrap;font-size:16px;direction:rtl;z-index:2}
+h2{font:800 26px/1.1 "Baloo 2",system-ui,sans-serif;margin:34px 0 12px}
+.tl{list-style:none;padding:0;margin:0;border-left:3px solid var(--gold);padding-left:18px}
+.tl li{position:relative;margin-bottom:12px}
+.tl li::before{content:"";position:absolute;left:-26px;top:8px;width:13px;height:13px;border-radius:50%;background:var(--gold);border:3px solid var(--bg)}
+.tl b{display:inline-block;min-width:3.4em;white-space:nowrap}
+.gl{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px}
+.gl div{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:8px 12px;display:flex;justify-content:space-between;gap:8px}
+.gl span:last-child{direction:rtl;color:var(--soft)}
+ol.qs{padding-left:22px}ol.qs li{margin-bottom:8px}
+.note{font-size:13px;color:var(--soft);margin-top:30px}
+</style>
+</head>
+<body>
+<div class="hero">
+<svg viewBox="0 0 1100 420" role="img" aria-label="Illustration: a singer on an evening stage in a great square, with a large dome behind and a crowd in front">
+<defs>
+<linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#14203d"/><stop offset="1" stop-color="#3b4a7a"/></linearGradient>
+<linearGradient id="beam" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe9a8" stop-opacity=".75"/><stop offset="1" stop-color="#ffe9a8" stop-opacity="0"/></linearGradient>
+<radialGradient id="glow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#ffd977" stop-opacity=".6"/><stop offset="1" stop-color="#ffd977" stop-opacity="0"/></radialGradient>
+</defs>
+<rect width="1100" height="420" fill="url(#sky)"/>
+<g fill="#fff" opacity=".8"><circle cx="90" cy="50" r="1.6"/><circle cx="210" cy="90" r="1.2"/><circle cx="330" cy="40" r="1.4"/><circle cx="800" cy="60" r="1.5"/><circle cx="930" cy="35" r="1.2"/><circle cx="1030" cy="95" r="1.6"/><circle cx="700" cy="30" r="1.1"/></g>
+<circle cx="980" cy="70" r="26" fill="#f7efd2"/><circle cx="992" cy="62" r="24" fill="#2a3762"/>
+<!-- basilica -->
+<g fill="#cdbf9f">
+<rect x="380" y="190" width="340" height="120"/>
+<path d="M430 190 Q550 40 670 190Z"/>
+<rect x="538" y="58" width="24" height="30"/>
+<path d="M530 60 Q550 40 570 60Z"/>
+<rect x="360" y="180" width="380" height="14"/>
+<path d="M360 180 L550 130 L740 180Z" fill="#d9cdb0"/>
+</g>
+<g fill="#b3a582">
+<rect x="400" y="200" width="16" height="110"/><rect x="440" y="200" width="16" height="110"/><rect x="480" y="200" width="16" height="110"/><rect x="520" y="200" width="16" height="110"/><rect x="564" y="200" width="16" height="110"/><rect x="604" y="200" width="16" height="110"/><rect x="644" y="200" width="16" height="110"/><rect x="684" y="200" width="16" height="110"/>
+</g>
+<path d="M460 160 Q550 70 640 160" fill="none" stroke="#e7dcc0" stroke-width="5" opacity=".6"/>
+<!-- colonnades -->
+<g fill="#b9ab89"><path d="M0 250 Q190 210 360 250 V320 H0Z"/><path d="M740 250 Q910 210 1100 250 V320 H740Z"/></g>
+<g fill="#9a8c6c" opacity=".7">
+<rect x="30" y="250" width="8" height="70"/><rect x="80" y="244" width="8" height="76"/><rect x="130" y="238" width="8" height="82"/><rect x="180" y="234" width="8" height="86"/><rect x="230" y="234" width="8" height="86"/><rect x="280" y="238" width="8" height="82"/><rect x="330" y="246" width="8" height="74"/>
+<rect x="770" y="246" width="8" height="74"/><rect x="820" y="238" width="8" height="82"/><rect x="870" y="234" width="8" height="86"/><rect x="920" y="234" width="8" height="86"/><rect x="970" y="238" width="8" height="82"/><rect x="1020" y="244" width="8" height="76"/><rect x="1070" y="250" width="8" height="70"/>
+</g>
+<!-- square -->
+<rect y="310" width="1100" height="110" fill="#2a3150"/>
+<!-- spotlight -->
+<path d="M520 0 L590 0 L640 330 L470 330Z" fill="url(#beam)"/>
+<ellipse cx="555" cy="300" rx="120" ry="40" fill="url(#glow)"/>
+<!-- stage -->
+<rect x="430" y="296" width="250" height="22" rx="3" fill="#5b3d2b"/>
+<rect x="430" y="292" width="250" height="6" fill="#7a5640"/>
+<!-- singer -->
+<g transform="translate(555 222)">
+<path d="M-22 70 Q-20 20 0 14 Q20 20 22 70Z" fill="#e8f0ff"/>
+<circle cx="0" cy="0" r="14" fill="#c98c5f"/>
+<path d="M-16 -2 Q-18 -22 0 -20 Q18 -22 16 -2 Q20 18 12 26 Q14 4 8 -6 Q0 -12 -8 -6 Q-14 4 -12 26 Q-20 18 -16 -2Z" fill="#1a1412"/>
+<line x1="22" y1="70" x2="22" y2="8" stroke="#333" stroke-width="2.5"/>
+<circle cx="18" cy="6" r="4" fill="#333"/>
+</g>
+<!-- guitarist -->
+<g transform="translate(625 246)">
+<rect x="-10" y="6" width="20" height="40" rx="6" fill="#26324f"/>
+<circle cx="0" cy="-4" r="11" fill="#b57e54"/>
+<ellipse cx="-4" cy="32" rx="16" ry="11" fill="#c0813f"/>
+<line x1="-4" y1="30" x2="-36" y2="12" stroke="#5b3d2b" stroke-width="4"/>
+</g>
+<!-- crowd -->
+<g fill="#151b30">
+<circle cx="40" cy="372" r="16"/><circle cx="95" cy="380" r="18"/><circle cx="150" cy="370" r="15"/><circle cx="205" cy="382" r="18"/><circle cx="262" cy="372" r="16"/><circle cx="318" cy="384" r="18"/><circle cx="372" cy="372" r="15"/><circle cx="428" cy="384" r="18"/><circle cx="485" cy="374" r="16"/><circle cx="540" cy="386" r="18"/><circle cx="598" cy="374" r="16"/><circle cx="655" cy="384" r="18"/><circle cx="710" cy="372" r="15"/><circle cx="765" cy="382" r="18"/><circle cx="822" cy="370" r="16"/><circle cx="878" cy="382" r="18"/><circle cx="934" cy="372" r="15"/><circle cx="990" cy="384" r="18"/><circle cx="1048" cy="372" r="16"/>
+<rect y="384" width="1100" height="40"/>
+</g>
+<g fill="#ffd977"><circle cx="150" cy="350" r="3"/><circle cx="430" cy="356" r="3"/><circle cx="765" cy="352" r="3"/><circle cx="990" cy="356" r="3"/></g>
+</svg>
+</div>
+
+<main>
+<h1>Noa Sings for the Pope</h1>
+<p class="by">A true story about the Israeli singer Achinoam Nini</p>
+<div class="tip">Tap a <b>yellow word</b> to see its meaning in Hebrew.</div>
+
+<p>Achinoam Nini, known around the world as Noa, was born in Tel Aviv in 1969. Her family’s <button class="w" data-he="מוצא">origin</button> is in Yemen, and she grew up hearing <button class="w" data-he="תימני">Yemenite</button> songs at home. When she was two, her family moved to New York. She came back to Israel as a teenager.</p>
+
+<p>In the army, Noa joined the <button class="w" data-he="בידור">entertainment</button> <button class="w" data-he="חיל">corps</button>. She sang in a military band for two years and performed hundreds of times. Later she met the guitarist Gil Dor, and they started making music together.</p>
+
+<p>Noa wrote her own English words for the famous song “Ave Maria.” The song became very popular in Italy. As a <button class="w" data-he="תוצאה">result</button>, in 1994 she was invited to sing it at the Vatican, a very <button class="w" data-he="דתי">religious</button> place for Christians. More than 100,000 people watched her <button class="w" data-he="הופעה">appearance</button>, and Pope John Paul II was there too. She was the first Israeli singer ever to perform there.</p>
+
+<p>Since then, Noa has sung <button class="w" data-he="ברחבי">throughout</button> the world, in more than 50 countries. She also sang for two more popes, Benedict and Francis. She says she <button class="w" data-he="להעריץ">adores</button> Pope Francis. More <button class="w" data-he="לאחרונה">recently</button>, in 2018, she sang for him in a small private room, and her daughter sang with her.</p>
+
+<p>People remember Noa for her great <button class="w" data-he="תרומה">contribution</button> to music and to understanding between different <button class="w" data-he="תרבויות">cultures</button>.</p>
+
+<h2>Noa’s timeline</h2>
+<ul class="tl">
+<li><b>1969</b> Born in Tel Aviv</li>
+<li><b>Age 2</b> Moves to New York</li>
+<li><b>Teen</b> Comes back to Israel, then sings in an army band</li>
+<li><b>1994</b> Sings “Ave Maria” at the Vatican for Pope John Paul II</li>
+<li><b>2018</b> Sings for Pope Francis with her daughter</li>
+</ul>
+
+<h2>Check yourself</h2>
+<ol class="qs">
+<li>What is the origin of Noa’s family?</li>
+<li>What did Noa do in the army?</li>
+<li>Why was she invited to the Vatican? What was the result?</li>
+<li>How many popes has Noa sung for?</li>
+<li>In your opinion, what is Noa’s biggest contribution?</li>
+</ol>
+
+<h2>New words</h2>
+<div class="gl">
+<div><span>origin</span><span>מוצא</span></div>
+<div><span>Yemenite</span><span>תימני</span></div>
+<div><span>entertainment</span><span>בידור</span></div>
+<div><span>corps</span><span>חיל</span></div>
+<div><span>throughout</span><span>ברחבי</span></div>
+<div><span>appearance</span><span>הופעה</span></div>
+<div><span>culture</span><span>תרבות</span></div>
+<div><span>adore</span><span>להעריץ</span></div>
+<div><span>recently</span><span>לאחרונה</span></div>
+<div><span>religious</span><span>דתי</span></div>
+<div><span>result</span><span>תוצאה</span></div>
+<div><span>contribution</span><span>תרומה</span></div>
+</div>
+<p class="note">The picture is an illustration, not a photo.</p>
+</main>
+<script>
+{
+document.querySelectorAll('.w').forEach(b=>b.addEventListener('click',()=>{
+  const was=b.classList.contains('open');
+  document.querySelectorAll('.w.open').forEach(x=>x.classList.remove('open'));
+  if(!was)b.classList.add('open');
+}));
+}
+</script>
+</body>
+</html>
