@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>North Wind Story Words</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Fredoka:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+<style>
+.words{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,280px),1fr));gap:14px}
+.word{background:var(--paper);border:2px solid var(--wind-soft);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:4px;break-inside:avoid}
+.word .en{font:600 26px/1.1 var(--f-head)}
+.word .he{font-size:20px;font-weight:700;color:var(--wind);direction:rtl;unicode-bidi:isolate;text-align:right}
+.word .ex{font-style:italic;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header style="display:flex;flex-direction:column;gap:10px">
+    <span class="step">Reference · The North Wind and the Sun</span>
+    <h1>Story words</h1>
+    <p class="lead">The 9 words from the story, with Hebrew. Tap <b>Listen</b> to hear a word. Back to <a href="../lessons/0001-the-north-wind-and-the-sun.html">the story</a>.</p>
+  </header>
+  <div class="words" id="words"></div>
+  <p class="moral">The lesson: Being gentle works better than being rough.</p>
+</div>
+<script src="../assets/speak.js"></script>
+<script>
+const L=[
+ ["argue","argued","להתווכח","to talk in an angry way because you do not agree","My brother and I argued about the TV."],
+ ["stronger","","חזק יותר","has more power","An elephant is stronger than a mouse."],
+ ["traveller","","מטייל, נוסע בדרך","a person who is going on a trip","The traveller walked to the next town."],
+ ["cloak","","גלימה","a long, warm coat with no sleeves","She put on her cloak because it was cold."],
+ ["blow","blew","לנשוב","to move the air hard","The wind blew my hat away."],
+ ["tighter","","צמוד יותר, הדוק יותר","holding closer and harder","Hold my hand tighter!"],
+ ["shine","shone","לזרוח","to give out light","The sun shone all day."],
+ ["gentle","","עדין, רך","soft and kind, not rough","Be gentle with the little cat."],
+ ["rough","","גס, קשוח","hard and not gentle","Don't be rough with the dog."]
+];
+const esc=t=>t.replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]));
+document.getElementById("words").innerHTML=L.map(([w,past,he,def,ex],i)=>`<div class="word">
+ <div class="row" style="justify-content:space-between"><span class="en">${w}${past?` <span class="note">· past: ${past}</span>`:""}</span>
+ <button class="btn small" data-i="${i}">Listen</button></div>
+ <div class="he">${he}</div><div>${esc(def)}</div><div class="ex">“${esc(ex)}”</div></div>`).join("");
+document.getElementById("words").addEventListener("click",e=>{const b=e.target.closest("[data-i]");if(!b)return;const r=L[+b.dataset.i];
+ Speak.say(r[0]+(r[1]?", "+r[1]:"")+". "+r[4])});
+</script>
+</body>
+</html>

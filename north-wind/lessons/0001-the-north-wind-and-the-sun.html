@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The North Wind and the Sun</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Fredoka:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<div class="wrap">
+
+  <header style="display:flex;flex-direction:column;gap:12px">
+    <span class="step">A story by Aesop · Lesson 1</span>
+    <h1>The North <span class="w">Wind</span> and the <span class="s">Sun</span></h1>
+    <p class="lead">A short story in 6 pictures. Tap a <span class="vw" style="cursor:default">yellow word</span> to see it in Hebrew and hear it.</p>
+  </header>
+
+  <div class="box voice-msg" id="voiceMsg" hidden>This app can't play the voice. Open the page in <b>Chrome</b> or <b>Safari</b> to listen.</div>
+
+  <section class="box" aria-labelledby="how">
+    <h2 id="how">Read it three times</h2>
+    <ol style="margin:0;padding-left:1.3em;display:flex;flex-direction:column;gap:4px">
+      <li><b>Listen.</b> Press <i>Read me the story</i>. Follow the words with your finger.</li>
+      <li><b>Read with the voice.</b> Press it again and read out loud at the same time.</li>
+      <li><b>Read alone.</b> Read it out loud by yourself. Tap any word you forget.</li>
+    </ol>
+    <div class="row">
+      <button class="btn main" id="readAll"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg>Read me the story</button>
+      <button class="btn" id="stop">Stop</button>
+    </div>
+  </section>
+
+  <section aria-label="The story" class="story" id="story"></section>
+  <p class="moral" id="moral"></p>
+
+  <section style="display:flex;flex-direction:column;gap:14px" aria-labelledby="check">
+    <div><span class="step">Check yourself</span><h2 id="check">What happened?</h2></div>
+    <p class="note">Try to answer <b>without</b> looking back at the story. If you are wrong, you can try again.</p>
+    <div id="quiz"></div>
+  </section>
+
+  <section class="box" aria-labelledby="more">
+    <h2 id="more">Want more?</h2>
+    <p>Read the old 1919 version of this story, with beautiful pictures by Milo Winter. It is free from the
+      <a href="https://www.read.gov/aesop/index.htm" target="_blank" rel="noopener">Library of Congress: <i>The Aesop for Children</i></a>.
+      It has harder words, so read it with a grown-up.</p>
+    <p>All the story words are on one page here: <a href="../reference/words.html">Story words</a>.</p>
+    <p class="note">Something not clear? Ask your teacher, or ask Claude to explain it in a different way.</p>
+  </section>
+
+  <footer>Retold in simple English from Aesop's fable, Perry Index 46
+    (<a href="https://en.wikipedia.org/wiki/The_North_Wind_and_the_Sun" target="_blank" rel="noopener">about the fable</a>).</footer>
+</div>
+
+<script src="../assets/speak.js"></script>
+<script src="../assets/quiz.js"></script>
+<script>
+(function(){
+const W={
+ argued:{show:"argued (argue)",he:"התווכחו (להתווכח)",def:"talked in an angry way because they did not agree",ex:"My brother and I argued about the TV."},
+ stronger:{he:"חזק יותר",def:"has more power",ex:"An elephant is stronger than a mouse."},
+ traveller:{he:"מטייל, נוסע בדרך",def:"a person who is going on a trip",ex:"The traveller walked to the next town."},
+ cloak:{he:"גלימה (מעיל ארוך בלי שרוולים)",def:"a long, warm coat with no sleeves",ex:"She put on her cloak because it was cold."},
+ blew:{show:"blew (blow)",he:"נשבה (לנשוב)",def:"moved the air hard. Blew is the past of blow.",ex:"The wind blew my hat away."},
+ tighter:{he:"צמוד יותר, הדוק יותר",def:"holding closer and harder",ex:"Hold my hand tighter!"},
+ shone:{show:"shone (shine)",he:"זרחה (לזרוח)",def:"gave out light. Shone is the past of shine.",ex:"The sun shone all day."},
+ gentle:{he:"עדין, רך",def:"soft and kind, not rough",ex:"Be gentle with the little cat."},
+ rough:{he:"גס, קשוח",def:"hard and not gentle",ex:"Don't be rough with the dog."}
+};
+const P=[
+ {cap:"One day, the North Wind and the Sun {argued}.",who:"Wind",say:"I am {stronger} than you!"},
+ {cap:"Then they saw a {traveller} on the road. He wore a warm {cloak}.",who:"Sun",say:"Let's see who can take off his cloak!"},
+ {cap:"The Wind {blew} and {blew}. It was very cold.",who:"Traveller",say:"Brrr! I'm so cold!"},
+ {cap:"But the man held his cloak {tighter}. The Wind could not win.",who:"Wind",say:"I give up!"},
+ {cap:"Then the Sun {shone}. It was warm and {gentle}.",who:"Traveller",say:"Phew! It's so hot!"},
+ {cap:"The man took off his cloak. The Sun won!",who:"Sun",say:"See? {gentle|Gentle} wins!"}
+];
+const MORAL="Being {gentle} works better than being {rough}.";
+
+/* ---------- drawings ---------- */
+const K="#1d2433";
+const svg=i=>`<svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true">${i}</svg>`;
+const bg=(sky,grass,hill)=>`<rect width="400" height="300" fill="${sky}"/>
+ <path d="M0 205 Q100 150 210 190 T400 180 V300 H0Z" fill="${hill||"#79b35c"}" stroke="${K}" stroke-width="3"/>
+ <path d="M0 240 Q200 222 400 236 V300 H0Z" fill="${grass||"#8cc46a"}" stroke="${K}" stroke-width="3"/>
+ <path d="M120 300 Q170 250 250 236 L292 236 Q230 262 236 300Z" fill="#ead6ad" stroke="${K}" stroke-width="3"/>`;
+const cloud=(x,y,s)=>`<g transform="translate(${x} ${y}) scale(${s})" fill="#fff" opacity=".9"><ellipse cx="0" cy="0" rx="34" ry="14"/><ellipse cx="-14" cy="-8" rx="16" ry="12"/><ellipse cx="12" cy="-10" rx="18" ry="14"/></g>`;
+function sun(x,y,r,mood,glow){
+ let rays="";for(let i=0;i<12;i++)rays+=`<line x1="0" y1="${-r*1.18}" x2="0" y2="${-r*1.55}" transform="rotate(${i*30})"/>`;
+ const f={
+  happy:`<path d="M-12 8 Q0 21 12 8" fill="none"/>`,
+  angry:`<path d="M-21 -19 L-6 -12 M21 -19 L6 -12"/><path d="M-10 15 Q0 8 10 15" fill="none"/>`
+ }[mood]||"";
+ return `<g transform="translate(${x} ${y})">
+  ${glow?`<circle r="${r*2}" fill="#fff6c2" opacity=".6"/><circle r="${r*1.65}" fill="#ffe887" opacity=".55"/>`:""}
+  <g stroke="#f29d00" stroke-width="${r*.15}" stroke-linecap="round">${rays}</g>
+  <circle r="${r}" fill="#ffcf3a" stroke="${K}" stroke-width="3"/>
+  <g transform="scale(${r/40})" stroke="${K}" stroke-width="3" stroke-linecap="round">
+   <circle cx="-13" cy="-5" r="3.5" fill="${K}" stroke="none"/><circle cx="13" cy="-5" r="3.5" fill="${K}" stroke="none"/>
+   <circle cx="-22" cy="8" r="5" fill="#f28b5b" opacity=".5" stroke="none"/><circle cx="22" cy="8" r="5" fill="#f28b5b" opacity=".5" stroke="none"/>
+   ${f}</g></g>`;
+}
+function wind(x,y,s,mood,blow){
+ const C=[[-38,8,24],[-14,-14,30],[18,-12,28],[42,8,22],[2,16,26],[-22,20,20]];
+ const out=C.map(c=>`<circle cx="${c[0]}" cy="${c[1]}" r="${c[2]}" fill="none" stroke="${K}" stroke-width="6"/>`).join("");
+ const fill=C.map(c=>`<circle cx="${c[0]}" cy="${c[1]}" r="${c[2]}" fill="#e6f0fb"/>`).join("");
+ const f={
+  angry:`<path d="M-14 -18 L0 -11 M28 -18 L14 -11"/><ellipse cx="7" cy="13" rx="7" ry="5" fill="${K}"/>`,
+  blow:`<path d="M-14 -14 L0 -10 M28 -14 L14 -10"/><circle cx="-12" cy="10" r="9" fill="#f6a5b4" opacity=".8" stroke="none"/><circle cx="26" cy="10" r="9" fill="#f6a5b4" opacity=".8" stroke="none"/><ellipse cx="44" cy="8" rx="5" ry="6" fill="${K}"/>`,
+  sad:`<path d="M-14 -10 L0 -14 M28 -10 L14 -14"/><path d="M0 16 Q7 9 14 16" fill="none"/><path d="M-8 3 q-4 7 0 9 q4 -2 0 -9Z" fill="#5aa9e6" stroke="none"/>`,
+  calm:`<path d="M1 11 Q7 15 13 11" fill="none"/>`
+ }[mood];
+ const lines=blow?`<g fill="none" stroke="#7fa7d9" stroke-width="5" stroke-linecap="round">
+  <path d="M60 -8 q25 -14 50 0 t50 0 t50 0"/><path d="M64 12 q25 -14 50 0 t50 0 t50 0"/><path d="M58 32 q22 -12 44 0 t44 0 t44 0"/></g>`:"";
+ return `<g transform="translate(${x} ${y}) scale(${s})">${lines}${out}${fill}
+  <g stroke="${K}" stroke-width="3" stroke-linecap="round"><circle cx="-6" cy="-4" r="3.5" fill="${K}" stroke="none"/><circle cx="20" cy="-4" r="3.5" fill="${K}" stroke="none"/>${f}</g></g>`;
+}
+const limb=(x1,y1,x2,y2,c)=>`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${K}" stroke-width="13" stroke-linecap="round"/><line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${c}" stroke-width="7" stroke-linecap="round"/>`;
+const hand=(x,y)=>`<circle cx="${x}" cy="${y}" r="5.5" fill="#e7b48a" stroke="${K}" stroke-width="2.5"/>`;
+function man(x,y,s,state,mood){
+ const RED="#c8423b",SH="#4f9d69",c=[];
+ c.push(`<rect x="-14" y="-54" width="10" height="50" fill="#3b3f5c" stroke="${K}" stroke-width="3"/><rect x="4" y="-54" width="10" height="50" fill="#3b3f5c" stroke="${K}" stroke-width="3"/>
+  <ellipse cx="-11" cy="-4" rx="11" ry="5" fill="#3a2a1a" stroke="${K}" stroke-width="2.5"/><ellipse cx="11" cy="-4" rx="11" ry="5" fill="#3a2a1a" stroke="${K}" stroke-width="2.5"/>`);
+ const torso=`<path d="M-20 -110 L20 -110 L22 -50 L-22 -50Z" fill="${SH}" stroke="${K}" stroke-width="3"/>`;
+ if(state==="walk"){
+  c.push(`<path d="M-24 -112 Q0 -118 24 -112 L34 -46 Q0 -40 -34 -46Z" fill="${RED}" stroke="${K}" stroke-width="3"/>`,hand(-30,-58),hand(30,-58));
+ }else if(state==="flap"){
+  c.push(`<path d="M-18 -112 Q30 -124 66 -110 Q92 -98 100 -76 Q76 -84 82 -62 Q58 -72 44 -56 Q30 -84 14 -104Z" fill="${RED}" stroke="${K}" stroke-width="3"/>`,torso,
+   limb(-16,-104,-24,-140,SH),hand(-24,-142),limb(16,-104,36,-88,SH),hand(38,-86));
+ }else if(state==="tight"){
+  c.push(`<path d="M-26 -112 Q0 -120 26 -112 L24 -46 Q0 -42 -24 -46Z" fill="${RED}" stroke="${K}" stroke-width="3"/>`,
+   limb(-20,-102,14,-80,RED),limb(20,-102,-14,-80,RED),hand(14,-80),hand(-14,-80),
+   `<g fill="none" stroke="${K}" stroke-width="2.5" stroke-linecap="round"><path d="M-40 -116 l-7 7 l7 7 l-7 7"/><path d="M40 -116 l7 7 l-7 7 l7 7"/><path d="M-46 -76 l-6 6 l6 6"/><path d="M46 -76 l6 6 l-6 6"/></g>`);
+ }else if(state==="hot"){
+  c.push(torso,`<path d="M-24 -112 L-10 -111 L-14 -46 L-36 -46Z" fill="${RED}" stroke="${K}" stroke-width="3"/><path d="M24 -112 L10 -111 L14 -46 L36 -46Z" fill="${RED}" stroke="${K}" stroke-width="3"/>`,
+   limb(20,-104,40,-130,SH),hand(41,-133),hand(-32,-56),
+   `<g fill="#6cbdf0" stroke="${K}" stroke-width="2"><path d="M-28 -150 q-6 9 0 12 q6 -3 0 -12Z"/><path d="M30 -158 q-6 9 0 12 q6 -3 0 -12Z"/><path d="M-36 -126 q-5 8 0 10 q5 -2 0 -10Z"/></g>`);
+ }else if(state==="off"){
+  c.push(torso,limb(-18,-104,-26,-64,SH),hand(-26,-60),limb(18,-104,34,-82,SH),
+   `<path d="M24 -88 Q40 -96 50 -84 L54 -44 Q40 -38 28 -46Z" fill="${RED}" stroke="${K}" stroke-width="3"/>`,hand(36,-84));
+ }
+ const m={happy:`<path d="M-6 -121 Q0 -114 6 -121" fill="none"/>`,
+  cold:`<path d="M-7 -119 l3.5 -3 l3.5 3 l3.5 -3 l3.5 3" fill="none"/>`,
+  hot:`<ellipse cx="0" cy="-119" rx="4" ry="3.5" fill="${K}"/>`}[mood];
+ const tilt=state==="flap"?-14:0;
+ c.push(`<rect x="-6" y="-114" width="12" height="8" fill="#e7b48a"/><circle cx="0" cy="-128" r="18" fill="#e7b48a" stroke="${K}" stroke-width="3"/>
+  <g stroke="${K}" stroke-width="2.5" stroke-linecap="round"><circle cx="-6.5" cy="-130" r="2.6" fill="${K}" stroke="none"/><circle cx="6.5" cy="-130" r="2.6" fill="${K}" stroke="none"/>${m}</g>
+  <g transform="rotate(${tilt} 0 -142)"><path d="M-16 -142 Q-16 -166 0 -166 Q16 -166 16 -142Z" fill="#7a5230" stroke="${K}" stroke-width="3"/>
+  <rect x="-16" y="-150" width="32" height="6" fill="#e9c46a"/><ellipse cx="0" cy="-142" rx="27" ry="5" fill="#7a5230" stroke="${K}" stroke-width="3"/></g>`);
+ const lean=state==="flap"?"rotate(-6)":"";
+ return `<g transform="translate(${x} ${y}) scale(${s}) ${lean}">${c.join("")}</g>`;
+}
+const leaves=`<g fill="#5f9e3f" stroke="${K}" stroke-width="2"><ellipse cx="180" cy="140" rx="9" ry="4" transform="rotate(-30 180 140)"/><ellipse cx="225" cy="175" rx="9" ry="4" transform="rotate(20 225 175)"/><ellipse cx="340" cy="120" rx="9" ry="4" transform="rotate(-50 340 120)"/><ellipse cx="370" cy="200" rx="9" ry="4" transform="rotate(10 370 200)"/></g>`;
+const ART=[
+ ()=>svg(bg("#a9d6f5")+cloud(200,50,.8)+wind(110,115,1.15,"angry")+sun(295,108,44,"angry")),
+ ()=>svg(bg("#a9d6f5")+cloud(200,40,.7)+wind(72,70,.62,"calm")+sun(334,62,26,"happy")+man(205,274,1.02,"walk","happy")),
+ ()=>svg(bg("#8fa6c2","#6f9a58","#5e8a4a")+wind(92,95,1.2,"blow",true)+leaves+man(292,274,1.02,"flap","cold")),
+ ()=>svg(bg("#a3b7cf","#7aa45f","#689550")+wind(82,78,.85,"sad")+man(255,274,1.02,"tight","cold")),
+ ()=>svg(bg("#ffd98a","#b6cf5c","#9cbf4f")+sun(305,88,50,"happy",true)+man(160,274,1.02,"hot","hot")),
+ ()=>svg(bg("#a9d6f5")+cloud(110,50,.7)+sun(325,72,40,"happy")+man(190,274,1.02,"off","happy"))
+];
+
+/* ---------- build ---------- */
+const plain=t=>t.replace(/\{(\w+)(?:\|([^}]+))?\}/g,(_,w,s)=>s||w);
+const marked=t=>t.replace(/\{(\w+)(?:\|([^}]+))?\}([.,!?]*)/g,(_,w,s,pn)=>`<span style="white-space:nowrap"><button class="vw" data-w="${w}">${s||w}</button>${pn}</span>`);
+const spk='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg>';
+const story=document.getElementById("story");
+story.innerHTML=P.map((p,i)=>`<article class="panel" id="p${i}">
+  <div class="cap"><span class="n">${i+1}</span><span class="t">${marked(p.cap)}</span></div>
+  <div class="art" role="img" aria-label="Picture ${i+1}">${ART[i]()}</div>
+  <p class="say"><span class="who">${p.who} says</span>“${marked(p.say)}”</p>
+  <div class="tools"><button class="btn small" data-p="${i}">${spk}Listen</button></div></article>`).join("");
+document.getElementById("moral").innerHTML="The lesson: "+marked(MORAL);
+const lineOf=p=>plain(p.cap)+" "+p.who+" says: "+plain(p.say);
+story.addEventListener("click",e=>{const b=e.target.closest("[data-p]");if(!b)return;const i=+b.dataset.p;
+ Speak.queue([{text:lineOf(P[i]),el:document.getElementById("p"+i)}])});
+document.getElementById("readAll").onclick=()=>Speak.queue(
+ P.map((p,i)=>({text:lineOf(p),el:document.getElementById("p"+i)})).concat([{text:"The lesson: "+plain(MORAL),el:document.getElementById("moral")}]));
+document.getElementById("stop").onclick=()=>Speak.stop();
+Words.mount(W);
+Quiz.mount(document.getElementById("quiz"),[
+ {q:"What did the traveller wear?",opts:["a red hat","a warm cloak","two black boots"],a:1,hint:"Look at picture 2."},
+ {q:"What did the man do when the Wind blew?",opts:["He took it off","He ran back home","He held it tighter"],a:2,hint:"Look at picture 4."},
+ {q:"Why did the man take off his cloak?",opts:["He was too hot","He was too cold","He was very tired"],a:0,hint:"Look at picture 5."},
+ {q:"What is the lesson of the story?",opts:["Being loud works better","Being gentle works better","Being fast works better"],a:1,hint:"Read the yellow box under the story."}
+]);
+})();
+</script>
+</body>
+</html>

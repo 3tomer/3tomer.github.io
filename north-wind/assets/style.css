@@ -1,0 +1,99 @@
+/* Shared stylesheet for the North Wind workspace.
+   VOICE: calm picture book for a 6th grader who finds reading hard
+   TYPE: Atkinson Hyperlegible (made for low-vision readers) for all reading text, Fredoka for headings
+   COLOUR: cool wind blue against warm sun gold, on a pale sky ground
+   LAYOUT: one reading column; panels stack, two across on wide screens */
+:root{
+  --sky:#eef5fb; --paper:#ffffff; --ink:#1d2433; --muted:#566178;
+  --wind:#3f6fb5; --wind-soft:#dde9f7; --sun:#e08a00; --sun-soft:#fff1cc;
+  --good:#1f8a4c; --good-soft:#dcf3e4; --bad:#c2333a; --bad-soft:#fde2e3;
+  --line:#1d2433; --word:#ffe27a;
+  --f-read:"Atkinson Hyperlegible",Verdana,system-ui,sans-serif;
+  --f-head:"Fredoka","Trebuchet MS",system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --sky:#141a26; --paper:#1f2738; --ink:#eef2f8; --muted:#a9b4c8;
+  --wind:#8db4ee; --wind-soft:#26344d; --sun:#ffc04d; --sun-soft:#3a3120;
+  --good:#5fd08f; --good-soft:#1d3a2a; --bad:#ff8a8f; --bad-soft:#42222a;
+  --line:#0b0f17; --word:#ffe27a; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --sky:#141a26; --paper:#1f2738; --ink:#eef2f8; --muted:#a9b4c8;
+  --wind:#8db4ee; --wind-soft:#26344d; --sun:#ffc04d; --sun-soft:#3a3120;
+  --good:#5fd08f; --good-soft:#1d3a2a; --bad:#ff8a8f; --bad-soft:#42222a;
+  --line:#0b0f17; --word:#ffe27a; color-scheme:dark}
+
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--sky);color:var(--ink);font:19px/1.65 var(--f-read);overflow-x:clip}
+.wrap{max-width:1000px;margin:0 auto;padding-block:28px 48px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  display:flex;flex-direction:column;gap:28px}
+h1,h2,h3{font-family:var(--f-head);font-weight:600;line-height:1.15;margin:0;text-wrap:balance}
+h1{font-size:clamp(32px,6vw,52px)}
+h1 .w{color:var(--wind)} h1 .s{color:var(--sun)}
+h2{font-size:clamp(24px,4vw,32px)}
+p{margin:0}
+a{color:var(--wind)}
+.lead{max-width:60ch;color:var(--muted)}
+.crumbs{font-size:16px}
+.step{display:inline-block;font:600 15px var(--f-head);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.box{background:var(--paper);border:2px solid var(--wind-soft);border-radius:14px;padding:16px 18px;display:flex;flex-direction:column;gap:10px}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;gap:8px;min-height:46px;padding:8px 16px;border:2px solid var(--line);border-radius:12px;
+  background:var(--paper);color:var(--ink);font:700 17px var(--f-read);cursor:pointer;box-shadow:3px 3px 0 var(--line)}
+.btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--line)}
+.btn.main{background:var(--wind);color:#fff}
+:root[data-theme="dark"] .btn.main{color:#0b0f17}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .btn.main{color:#0b0f17}}
+.btn.small{min-height:40px;padding:4px 12px;font-size:15px}
+.btn svg{width:20px;height:20px;flex:none}
+:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+
+/* story panels */
+.story{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,420px),1fr));gap:22px}
+.panel{background:var(--paper);border:3px solid var(--line);border-radius:10px;overflow:hidden;display:flex;flex-direction:column;
+  box-shadow:5px 5px 0 var(--line);transition:box-shadow .2s,transform .2s}
+.panel.reading{box-shadow:0 0 0 5px var(--sun),5px 5px 0 var(--line)}
+.cap{padding:12px 14px;font-size:21px;line-height:1.55;border-bottom:3px solid var(--line);background:var(--sun-soft);display:flex;gap:10px;align-items:flex-start}
+.cap .n{flex:none;font:600 22px/1.4 var(--f-head);color:var(--sun)}
+.cap .t{flex:1;min-width:0}
+.art{aspect-ratio:4/3;max-width:100%;background:#cfe6f7}
+.art svg{display:block;width:100%;height:100%}
+.say{margin:14px 14px 4px;position:relative;background:var(--wind-soft);border-radius:14px;padding:10px 14px;font-size:20px}
+.say::before{content:"";position:absolute;top:-10px;left:28px;border:10px solid transparent;border-top:0;border-bottom-color:var(--wind-soft)}
+.say .who{font:600 15px var(--f-head);letter-spacing:.04em;text-transform:uppercase;color:var(--muted);display:block}
+.panel .tools{padding:10px 14px 14px}
+.moral{background:var(--sun);color:#1d2433;border:3px solid var(--line);border-radius:10px;padding:16px 18px;text-align:center;
+  font:600 clamp(22px,4vw,30px)/1.25 var(--f-head);box-shadow:5px 5px 0 var(--line)}
+
+/* tappable words */
+.vw{font:inherit;color:#1d2433;background:var(--word);border:0;border-bottom:3px solid var(--sun);border-radius:4px;padding:0 4px;cursor:pointer}
+.sheet{position:fixed;left:50%;bottom:calc(16px + env(safe-area-inset-bottom,0px));transform:translate(-50%,160%);width:min(calc(100vw - 32px),460px);
+  background:var(--paper);color:var(--ink);border:3px solid var(--line);border-radius:16px;box-shadow:5px 5px 0 var(--line);padding:14px 16px;
+  display:flex;flex-direction:column;gap:8px;transition:transform .25s,visibility .25s;visibility:hidden;z-index:20}
+.sheet.on{transform:translate(-50%,0);visibility:visible}
+.sheet .w{font:600 30px/1.1 var(--f-head)}
+.sheet .he{font-size:22px;font-weight:700;color:var(--wind);direction:rtl;unicode-bidi:isolate}
+.sheet .ex{font-style:italic;color:var(--muted)}
+
+/* quiz */
+.quiz{display:flex;flex-direction:column;gap:18px}
+.q{background:var(--paper);border:2px solid var(--wind-soft);border-radius:14px;padding:16px 18px;display:flex;flex-direction:column;gap:12px}
+.q .ask{font-weight:700;font-size:21px;display:flex;gap:10px;align-items:flex-start;justify-content:space-between}
+.q .opts{display:flex;flex-direction:column;gap:10px}
+.opt{text-align:left;min-height:52px;padding:10px 14px;border:2px solid var(--line);border-radius:12px;background:var(--paper);color:var(--ink);font:400 20px var(--f-read);cursor:pointer}
+.opt:hover{background:var(--wind-soft)}
+.opt.ok{background:var(--good-soft);border-color:var(--good);font-weight:700}
+.opt.no{background:var(--bad-soft);border-color:var(--bad);text-decoration:line-through}
+.fb{min-height:1.6em;font-weight:700}
+.fb.ok{color:var(--good)} .fb.no{color:var(--bad)}
+.score{font:600 24px var(--f-head)}
+
+.note{font-size:16px;color:var(--muted)}
+.voice-msg{display:block;background:var(--bad-soft);border-color:var(--bad)}
+footer{font-size:15px;color:var(--muted)}
+@media (prefers-reduced-motion:reduce){.sheet,.panel{transition:none}}
+@media print{.btn,.sheet,.tools{display:none!important}body{background:#fff}.panel{break-inside:avoid;box-shadow:none}}
