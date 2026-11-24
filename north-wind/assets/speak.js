@@ -1,5 +1,5 @@
 /* Read-aloud + tap-a-word helper. Reusable in every lesson.
-   Speak.say(text, onend)      read text aloud in English (slow, clear)
+   Speak.say(text, onend)      play the recording of text (window.SPEAK_AUDIO), else the browser voice
    Speak.queue([{text, el}])   read items in order, highlighting each el with .reading
    Words.mount(dict)           makes every <button class="vw" data-w="key"> open a word card
                                dict[key] = {he, def, ex, show?} */
@@ -15,7 +15,21 @@
   }
   if(SS){ pick(); try{ SS.addEventListener("voiceschanged", pick); }catch(e){} }
   function noVoice(){ const m=document.getElementById("voiceMsg"); if(m) m.hidden=false; }
+  /* Recorded audio first (window.SPEAK_AUDIO = {text: url}), browser voice as a fallback. */
+  const AU = new Audio(); AU.preload = "auto";
   function say(text, onend){
+    const src = (window.SPEAK_AUDIO || {})[text];
+    if(src){
+      try{
+        if(SS) SS.cancel();
+        AU.pause(); AU.onended = ()=>{ onend && onend(); }; AU.src = src; AU.currentTime = 0;
+        const p = AU.play(); if(p && p.catch) p.catch(()=>{ AU.onended = null; tts(text, onend); });
+        return;
+      }catch(e){}
+    }
+    tts(text, onend);
+  }
+  function tts(text, onend){
     if(!SS){ noVoice(); onend && onend(); return; }
     try{
       SS.cancel();
@@ -29,7 +43,7 @@
       setTimeout(()=>{ if(!started && !SS.speaking) noVoice(); }, 3000);
     }catch(e){ noVoice(); }
   }
-  function stop(){ stopFlag = true; if(SS) SS.cancel(); document.querySelectorAll(".reading").forEach(x=>x.classList.remove("reading")); }
+  function stop(){ stopFlag = true; try{ AU.pause(); }catch(e){} if(SS) SS.cancel(); document.querySelectorAll(".reading").forEach(x=>x.classList.remove("reading")); }
   function queue(items, done){
     stopFlag = false; let i = 0;
     const next = ()=>{
@@ -58,10 +72,10 @@
         cur = b.dataset.w; const d = dict[cur]; if(!d) return;
         q(".w").textContent = d.show || cur; q(".he").textContent = d.he;
         q(".def").textContent = d.def; q(".ex").textContent = "“" + d.ex + "”";
-        sheet.classList.add("on"); say(d.show || cur);
+        sheet.classList.add("on"); say(cur);
       });
       q("[data-close]").onclick = ()=>sheet.classList.remove("on");
-      q("[data-listen]").onclick = ()=>{ if(cur) say((dict[cur].show||cur) + ". " + dict[cur].ex); };
+      q("[data-listen]").onclick = ()=>{ if(cur) say(cur + ". " + dict[cur].ex); };
       document.addEventListener("keydown", e=>{ if(e.key==="Escape") sheet.classList.remove("on"); });
     }
   };
